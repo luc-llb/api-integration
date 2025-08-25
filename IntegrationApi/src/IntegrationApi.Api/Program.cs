@@ -14,7 +14,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+if (!string.IsNullOrEmpty(app.Urls.FirstOrDefault(url => url.StartsWith("https://"))))
+{
+    app.UseHttpsRedirection();
+}
 
 var summaries = new[]
 {
