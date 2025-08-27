@@ -11,14 +11,10 @@ namespace IntegrationApi.Infrastructure.Data
         public AppDbContext() { }
         
         public DbSet<Character> Characters => Set<Character>();
+        public DbSet<Animation> Animations => Set<Animation>();
         
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
-            {
-                // String de conexão padrão para migrations
-                optionsBuilder.UseSqlServer("Server=localhost,1433;Database=animes;User Id=admin;Password=Admin@123456;TrustServerCertificate=True;");
-            }
         }
     }
 }
