@@ -1,5 +1,4 @@
 using DotNetEnv;
-using System.IO;
 
 namespace IntegrationApi.Infrastructure.Data
 {
@@ -8,30 +7,31 @@ namespace IntegrationApi.Infrastructure.Data
     /// </summary>
     public static class ConnectionStringProvider
     {
+        /// <summary>
+        /// Loads the .env file from the possible paths.
+        /// </summary>
         private static void LoadEnvFile()
         {
-            // Lista de possíveis caminhos para o arquivo .env
             var possiblePaths = new[]
             {
-                Path.Combine(Directory.GetCurrentDirectory(), ".env"),                   // Na pasta atual
-                Path.Combine(Directory.GetCurrentDirectory(), "../.env"),                // Um nível acima
-                Path.Combine(Directory.GetCurrentDirectory(), "../../.env"),             // Dois níveis acima
-                Path.Combine(Directory.GetCurrentDirectory(), "../../../.env"),          // Três níveis acima
-                Path.Combine(Directory.GetCurrentDirectory(), "../../../../.env"),        // Quatro níveis acima
-                Path.Combine(AppContext.BaseDirectory, ".env"),                          // Na pasta do executável
-                Path.Combine(AppContext.BaseDirectory, "../.env"),                       // Um nível acima do executável
-                Path.Combine(AppContext.BaseDirectory, "../../.env"),                    // Dois níveis acima do executável
-                Path.Combine(AppContext.BaseDirectory, "../../../.env"),                 // Três níveis acima do executável
-                Path.Combine(AppContext.BaseDirectory, "../../../../.env"),              // Quatro níveis acima do executável
-                Path.Combine(AppContext.BaseDirectory, "../../../../../.env"),           // Cinco níveis acima do executável
+                Path.Combine(Directory.GetCurrentDirectory(), ".env"),
+                Path.Combine(Directory.GetCurrentDirectory(), "../.env"),
+                Path.Combine(Directory.GetCurrentDirectory(), "../../.env"),
+                Path.Combine(Directory.GetCurrentDirectory(), "../../../.env"),
+                Path.Combine(Directory.GetCurrentDirectory(), "../../../../.env"),
+                Path.Combine(AppContext.BaseDirectory, ".env"),
+                Path.Combine(AppContext.BaseDirectory, "../.env"),
+                Path.Combine(AppContext.BaseDirectory, "../../.env"),
+                Path.Combine(AppContext.BaseDirectory, "../../../.env"),
+                Path.Combine(AppContext.BaseDirectory, "../../../../.env"),
+                Path.Combine(AppContext.BaseDirectory, "../../../../../.env"),
             };
 
-            // Procura o arquivo .env em todos os caminhos possíveis
+            // Search for the .env file in all possible paths
             foreach (var path in possiblePaths)
             {
                 if (File.Exists(path))
                 {
-                    // Console.WriteLine($"Load .env file from: {path}");
                     Env.Load(path);
                     return;
                 }

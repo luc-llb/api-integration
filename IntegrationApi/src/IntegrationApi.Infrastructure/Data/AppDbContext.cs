@@ -4,15 +4,14 @@ using System.Reflection;
 
 namespace IntegrationApi.Infrastructure.Data
 {
+    /// <summary>
+    /// Application database context.
+    /// </summary>
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        // Construtor sem parâmetros para o EF Core Design Time
         public AppDbContext() { }
-
-        // public DbSet<Character> Characters => Set<Character>();
-        // public DbSet<Animation> Animations => Set<Animation>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
 
@@ -30,11 +29,12 @@ namespace IntegrationApi.Infrastructure.Data
                 {
                     modelBuilder.Entity(type);
                 }
-            }else
+            }
+            else
             {
                 throw new InvalidOperationException("No entity types found in the assembly.");
             }
         }
-        
+
     }
 }
