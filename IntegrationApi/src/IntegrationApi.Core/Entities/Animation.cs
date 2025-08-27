@@ -3,9 +3,12 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace IntegrationApi.Core.Entities
 {
+    /// <summary>
+    /// Represents an animated series.
+    /// </summary>
     public class Animation : BaseEntity
     {
-        
+
         [Required]
         public string Title { get; set; }
         [AllowNull]

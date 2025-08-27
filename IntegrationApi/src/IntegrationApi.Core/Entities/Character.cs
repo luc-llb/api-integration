@@ -4,6 +4,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace IntegrationApi.Core.Entities
 {
+    /// <summary>
+    /// Represents a character in an animated series.
+    /// </summary>
     public class Character : BaseEntity
     {
         [Required]
