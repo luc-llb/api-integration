@@ -7,7 +7,7 @@ echo "Try connect in SQL Server into $DB_HOST:$DB_PORT as SA..."
 echo "Executing database creation script..."
 
 # Execute the SQL script as user SA
-sqlcmd -S "$DB_HOST,$DB_PORT" -U SA -P "Password123!" -i create_database.sql
+sqlcmd -S "$DB_HOST,$DB_PORT" -U SA -P "$DB_SA_PASSWORD" -i create_database.sql
 
 if [ $? -eq 0 ]; then
     echo "Database created/verified successfully!"
