@@ -1,9 +1,33 @@
+using DotNetEnv;
+using IntegrationApi.Infrastructure.Data;
+using IntegrationApi.Core.Interfaces;
+using IntegrationApi.Core.Entities;
+using IntegrationApi.Infrastructure.Services;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
+Env.Load();
+
+var dbType = Environment.GetEnvironmentVariable("DB_TYPE");
+string connectionString = ConnectionStringProvider.GetConnectionString();
+
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+if (dbType == "sqlserver")
+{
+    builder.Services.AddDbContext<AppDbContext>(options =>
+        options.UseSqlServer(connectionString));
+}
+else
+{
+    throw new Exception("Database type not supported");
+}
+
+builder.Services.AddScoped<IRepositoryBase<Character>, RepositoryBase<Character>>();
+builder.Services.AddScoped<IRepositoryBase<Animation>, RepositoryBase<Animation>>();
 
 var app = builder.Build();
 
