@@ -8,8 +8,8 @@ namespace IntegrationApi.Infrastructure.Data
         public AppDbContext CreateDbContext(string[] args)
         {
             var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-            optionsBuilder.UseSqlServer("Server=localhost,1433;Database=animes;User Id=admin;Password=Admin@123456;TrustServerCertificate=True;");
-
+            var connectionString = ConnectionStringProvider.GetConnectionString();
+            optionsBuilder.UseSqlServer(connectionString);
             return new AppDbContext(optionsBuilder.Options);
         }
     }
