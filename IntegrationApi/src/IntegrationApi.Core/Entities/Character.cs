@@ -14,16 +14,25 @@ namespace IntegrationApi.Core.Entities
         [AllowNull]
         public string Gender { get; set; }
         [AllowNull]
-        public DateTime DateOfBirth { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         [AllowNull]
         public string[] AlternativeName { get; set; }
         [AllowNull]
         [ForeignKey(nameof(Animation))]
         public int AnimationId { get; set; }
 
-        public Character(int id, string name, string gender, DateTime dateOfBirth, string[] alternativeName, int animationId)
+        public Character()
         {
-            Id = id;
+            Name = string.Empty;
+            Gender = "Unknown";
+            DateOfBirth = null;
+            AlternativeName = Array.Empty<string>();
+            AnimationId = 0;
+        }
+
+        public Character(int aniListId, string name, string gender, DateTime dateOfBirth, string[] alternativeName, int animationId)
+        {
+            AniListId = aniListId;
             Name = name;
             Gender = gender ?? "Unknown";
             DateOfBirth = dateOfBirth;

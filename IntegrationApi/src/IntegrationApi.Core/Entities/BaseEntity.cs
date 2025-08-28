@@ -6,5 +6,7 @@ namespace IntegrationApi.Core.Entities
     {
         [Key]
         public int Id { get; set; }
+
+        public int AniListId { get; set; }
     }
 }
