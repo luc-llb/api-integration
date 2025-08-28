@@ -3,6 +3,8 @@ using System.Text;
 using System.Text.Json;
 using IntegrationApi.Core.DTOs;
 using System.Threading.Tasks;
+using IntegrationApi.Core.Exceptions;
+using System.Net;
 
 namespace IntegrationApi.Infrastructure.Services{
 
@@ -51,18 +53,28 @@ namespace IntegrationApi.Infrastructure.Services{
             ));
 
             var responseContent = await response.Content.ReadAsStringAsync();
-            
-            try{
-                response.EnsureSuccessStatusCode();
+
+            // Verify if the response is a GraphQL error (404 Not Found common for searches with no results)
+            if (response.StatusCode == HttpStatusCode.NotFound ||
+                response.StatusCode == HttpStatusCode.OK)
+            {
+                return responseContent;
             }
-            catch(HttpRequestException ex){
-                throw new ApplicationException(
-                    $"Error executing a GraphQL query.\n" +
-                    $"URL: {endpoint}\n" +
-                    $"Request: {requestBody}\n" +
-                    $"Response: {responseContent}", 
-                    ex
-                );
+            else
+            {
+                try
+                {
+                    response.EnsureSuccessStatusCode();
+                }
+                catch (HttpRequestException ex)
+                {
+                    throw new ExternalApiException(
+                        "GraphQL API",
+                        endpoint,
+                        $"Fail in communication with GraphQL API. Response: {responseContent}",
+                        ex
+                    );
+                }
             }
             
             return responseContent;
