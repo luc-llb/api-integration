@@ -1,0 +1,6 @@
+Id,Name,Gender,DateOfBirth,AlternativeName,AnimationId,AniListId
+1,Izuku Midoriya,Male,NULL,["Deku (\u30C7\u30AF)"],21459,89028
+2,Naruto Uzumaki,Male,NULL,["Nine-Tails Jinchuuriki","The Show-Off","Number One Unpredictable","Noisy Ninja","Number One Hyperactive","Knucklehead Ninja","Fox"],20,17
+3,Minato Namikaze,Male,NULL,["Yondaime Hokage","Fourth Hokage","Konoha\u0027s Yellow Flash"],20,2535
+4,Sakura Haruno,Female,NULL,[],20,145
+5,Itachi Uchiha,Male,NULL,["Sharingan no Itachi (\u5199\u8F2A\u773C\u306E\u30A4\u30BF\u30C1)","Itachi of the Sharingan"],20,14
