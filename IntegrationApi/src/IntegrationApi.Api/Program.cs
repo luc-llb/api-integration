@@ -4,6 +4,7 @@ using IntegrationApi.Core.Interfaces;
 using IntegrationApi.Core.Entities;
 using IntegrationApi.Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
+using IntegrationApi.Api.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,26 +13,29 @@ Env.Load();
 var dbType = Environment.GetEnvironmentVariable("DB_TYPE");
 string connectionString = ConnectionStringProvider.GetConnectionString();
 
-// Add services to the container.
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-if (dbType == "sqlserver")
-{
-    builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseSqlServer(connectionString));
-}
-else
+
+builder.Services.AddCors(options =>
 {
-    throw new Exception("Database type not supported");
-}
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                          .AllowAnyMethod()
+                          .AllowAnyHeader());
+});
 
 builder.Services.AddScoped<IRepositoryBase<Character>, RepositoryBase<Character>>();
 builder.Services.AddScoped<IRepositoryBase<Animation>, RepositoryBase<Animation>>();
+builder.Services.AddScoped<IAnimationService, AnimationService>();
+builder.Services.AddScoped<ICharacterService, CharacterService>();
+builder.Services.AddHttpClient<GraphQLService>();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -42,6 +46,12 @@ if (!string.IsNullOrEmpty(app.Urls.FirstOrDefault(url => url.StartsWith("https:/
 {
     app.UseHttpsRedirection();
 }
+
+app.UseGlobalExceptionHandler();
+
+app.UseCors("AllowAllOrigins");
+app.UseAuthorization();
+app.MapControllers();
 
 app.Run();
 
