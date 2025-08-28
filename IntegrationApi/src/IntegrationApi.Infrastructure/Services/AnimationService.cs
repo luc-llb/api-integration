@@ -59,8 +59,22 @@ namespace IntegrationApi.Infrastructure.Services
                 var jsonDocument = JsonDocument.Parse(response);
                 var root = jsonDocument.RootElement;
                 
+                if (root.TryGetProperty("errors", out var errors))
+                {
+                    if (errors.ValueKind == JsonValueKind.Array && errors.GetArrayLength() > 0)
+                    {
+                        var firstError = errors[0];
+                        if (firstError.TryGetProperty("status", out var status) && status.GetInt32() == 404)
+                        {
+                            Console.WriteLine("Animation not found in AniList API.");
+                            return animations; 
+                        }
+                    }
+                }
+                
                 if (root.TryGetProperty("data", out var data) && 
-                    data.TryGetProperty("Media", out var media))
+                    data.TryGetProperty("Media", out var media) && 
+                    media.ValueKind != JsonValueKind.Null)
                 {
                     var animation = new Animation
                     {
@@ -85,7 +99,13 @@ namespace IntegrationApi.Infrastructure.Services
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error parsing GraphQL response: {ex.Message}");
+                if (ex.Message.Contains("type 'Null'"))
+                {
+                    Console.WriteLine("Animation not found in API.");
+                    return animations;
+                }
+
+                Console.WriteLine($"Error processing GraphQL response: {ex.Message}");
             }
             
             return animations;

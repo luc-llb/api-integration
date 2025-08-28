@@ -1,6 +1,7 @@
 using IntegrationApi.Core.Interfaces;
 using IntegrationApi.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using IntegrationApi.Core.Exceptions;
 
 namespace IntegrationApi.Infrastructure.Services
 {
@@ -24,7 +25,7 @@ namespace IntegrationApi.Infrastructure.Services
         {
             if (entity == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                throw new ValidationException("entity", "The entity cannot be null.");
             }
 
             await _dbSet.AddAsync(entity);
@@ -36,7 +37,8 @@ namespace IntegrationApi.Infrastructure.Services
             var entity = await _dbSet.FindAsync(id);
             if (entity == null)
             {
-                throw new KeyNotFoundException($"Entity with ID {id} not found.");
+                string typeName = typeof(T).Name;
+                throw new ResourceNotFoundException($"The resource '{typeName}' with ID {id} was not found.");
             }
 
             _dbSet.Remove(entity);
@@ -53,7 +55,8 @@ namespace IntegrationApi.Infrastructure.Services
             var entity = await _dbSet.FindAsync(id);
             if (entity == null)
             {
-                throw new KeyNotFoundException($"Entity with ID {id} not found.");
+                string typeName = typeof(T).Name;
+                throw new ResourceNotFoundException($"The resource '{typeName}' with ID {id} was not found.");
             }
 
             return entity;
@@ -63,7 +66,7 @@ namespace IntegrationApi.Infrastructure.Services
         {
             if (entity == null)
             {
-                throw new ArgumentNullException(nameof(entity));
+                throw new ValidationException("entity", "The entity cannot be null.");
             }
 
             _dbSet.Update(entity);
