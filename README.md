@@ -18,7 +18,7 @@ This project integrates with the [AniList GraphQL API](https://graphql.anilist.c
 ## Prerequisites
 
 Before running this project, ensure you have the following installed:
-- **.NET 9.0 SDK**
+- **.NET 8.0 SDK**
 - **Docker** (for SQL Server container)
 - **Git**
 
@@ -240,7 +240,7 @@ Este projeto se integra com a [API GraphQL do AniList](https://graphql.anilist.c
 ### Pré-requisitos
 
 Antes de executar este projeto, certifique-se de ter os seguintes itens instalados:
-- **.NET 9.0 SDK**
+- **.NET 8.0 SDK**
 - **Docker** (para o container do SQL Server)
 - **Git**
 
